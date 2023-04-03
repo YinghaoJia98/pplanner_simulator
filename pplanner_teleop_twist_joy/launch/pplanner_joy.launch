@@ -1,0 +1,8 @@
+<launch>
+      <node name="joy_node" pkg="joy" type="joy_node" output="screen"/>
+      <node name="pplanner_teleop_twist_joy_node" pkg="pplanner_teleop_twist_joy" type="pplanner_teleop_twist_joy_node" output="screen">
+        <remap from="cmd_vel" to="cmd_vel"/>
+        <param name="max_velocity_angular" value="0.3"/>
+        <param name="max_velocity_linear" value="0.5"/>
+      </node>
+</launch>

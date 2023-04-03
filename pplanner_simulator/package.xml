@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>pplanner_simulator</name>
+  <version>1.0.0</version>
+  <description>SuperMegaBot Simulator</description>
+  <maintainer email="mkulkarni@nevada.unr.edu">Mihir Kulkarni</maintainer>
+	<maintainer email="mdharmadhikari@nevada.unr.edu">Mihir Dharmadhikari</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>catkin_simple</buildtool_depend>
+  <depend>roscpp</depend>
+</package>

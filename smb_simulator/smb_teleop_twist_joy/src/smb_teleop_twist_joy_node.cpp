@@ -62,6 +62,14 @@ public:
 
 	void timerCb(const ros::TimerEvent &event)
 	{
+		if ((abs(output.linear.x) < 0.001) && (abs(output.angular.z) < 0.001))
+		{
+			// ROS_INFO("Velocity from joy is zero");
+			return;
+		}
+		else
+		{
+		}
 		cmd_vel_pub_.publish(output);
 	}
 

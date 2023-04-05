@@ -48,6 +48,14 @@ public:
 		{
 			output.linear.x = msg.axes[1] * max_velocity_linear;
 			output.angular.z = msg.axes[0] * max_velocity_angular;
+			if ((abs(output.linear.x) < 0.001) && (abs(output.angular.z) < 0.001))
+			{
+				// ROS_INFO("Velocity from joy is zero");
+				return;
+			}
+			else
+			{
+			}
 		}
 		cmd_vel_pub_.publish(output);
 	}

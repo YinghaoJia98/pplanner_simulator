@@ -53,6 +53,7 @@
 
       <node name="smb_teleop_twist_joy_node" pkg="smb_teleop_twist_joy" type="smb_teleop_twist_joy_node" output="screen">
         <remap from="cmd_vel" to="joy_teleop/cmd_vel"/>
+        <!--remap from="cmd_vel" to="smb_velocity_controller/cmd_vel"/-->
         <param name="max_velocity_angular" value="1.5"/>
         <param name="max_velocity_linear" value="1"/>
       </node>

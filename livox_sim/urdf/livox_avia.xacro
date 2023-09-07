@@ -88,7 +88,7 @@
     </gazebo>
   </xacro:macro>
 
-  <xacro:macro name="Livox_AVIA" params="visualize:=True name:=livox">
+  <xacro:macro name="Livox_AVIA" params="*origin visualize:=True name:=livox">
   <joint name="${name}_base_mount_joint" type="fixed">
       <xacro:insert_block name="origin" />
       <parent link="base_link"/>

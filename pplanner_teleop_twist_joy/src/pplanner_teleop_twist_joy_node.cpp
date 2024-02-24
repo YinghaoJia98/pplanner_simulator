@@ -50,8 +50,10 @@ public:
 			output.angular.z = msg.axes[0] * max_velocity_angular;
 			if ((abs(output.linear.x) < 0.001) && (abs(output.angular.z) < 0.001))
 			{
-				ROS_INFO("Velocity from joy is zero");
-				return;
+				output.linear.x = 0;
+				output.angular.z = 0;
+				// ROS_INFO("Velocity from joy is zero");
+				// return;
 			}
 			else
 			{

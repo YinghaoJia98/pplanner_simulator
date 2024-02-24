@@ -5,6 +5,7 @@
     <arg name="dollar" value="$"/>
     <!-- Debug mode will hung up the robot, use "true" or "false" to switch it. -->
     <arg name="user_debug" default="false"/>
+    <arg name="joystick" default="false"/>
     
     <!-- Load the URDF into the ROS Parameter Server -->
     <param name="robot_description"
@@ -41,11 +42,38 @@
         <remap from="/joint_states" to="/$(arg rname)_gazebo/joint_states"/>
     </node>
 
+    <node name="message_to_tf" pkg="smb_gazebo" type="message_to_tf" output="screen">
+      <param name="odometry_topic" value="ground_truth/state"/>
+      <param name="frame_id" value="world"/>
+    </node>
+
+    <node name="odom_to_world_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 /world /odom 10"/>
+
     <!-- <node pkg="unitree_gazebo" type="servo" name="servo" required="true" output="screen"/> -->
 
     <!-- load the parameter unitree_controller -->
     <include file="$(find unitree_controller)/launch/set_ctrl.launch">
         <arg name="rname" value="$(arg rname)"/>
     </include>
+
+    <node pkg="twist_mux" type="twist_mux" name="twist_mux">
+      <rosparam command="load" file="$(find smb_lowlevel_controller)/config/twist_mux.yaml" />
+      <remap from="cmd_vel_out" to="unitree_velocity_controller/cmd_vel"/>
+    </node>
+
+    <!-- Spawn human control nodes -->
+    <node pkg="interactive_marker_twist_server" type="marker_server" name="twist_marker_server" output="screen"/>
+
+    <group if="$(arg joystick)">
+      <node name="joy_node" pkg="joy" type="joy_node" output="screen"/>
+
+        <param name="max_velocity_angular" value="0.5"/>
+        <param name="max_velocity_linear" value="1.0"/>
+      <node name="pplanner_teleop_twist_joy_node" pkg="pplanner_teleop_twist_joy" type="pplanner_teleop_twist_joy_node" output="screen">
+        <remap from="cmd_vel" to="joy_teleop/cmd_vel"/>
+        <!--remap from="cmd_vel" to="smb_velocity_controller/cmd_vel"/-->
+        
+      </node>
+    </group>
 
 </launch>

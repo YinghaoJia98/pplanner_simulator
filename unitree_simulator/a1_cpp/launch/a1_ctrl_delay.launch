@@ -1,0 +1,11 @@
+<launch>
+    <arg name="type" default="gazebo"/>
+    <arg name="solver_type" default="mpc"/>
+    <arg name="node_start_delay" default="1.0" />  
+
+    <rosparam file="$(find a1_cpp)/config/$(arg type)_a1_$(arg solver_type).yaml" command="load"/>
+
+    <node pkg="a1_cpp" type="$(arg type)_a1_ctrl" name="$(arg type)_a1_ctrl" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "/>
+
+    <node name="joy_node" pkg="joy" type="joy_node" output="screen"/>
+</launch>

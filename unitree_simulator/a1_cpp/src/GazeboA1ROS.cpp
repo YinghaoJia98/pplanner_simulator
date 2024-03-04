@@ -56,7 +56,10 @@ GazeboA1ROS::GazeboA1ROS(ros::NodeHandle &_nh)
     sub_foot_contact_msg[2] = nh.subscribe("/visual/RL_foot_contact/the_force", 2, &GazeboA1ROS::RL_foot_contact_callback, this);
     sub_foot_contact_msg[3] = nh.subscribe("/visual/RR_foot_contact/the_force", 2, &GazeboA1ROS::RR_foot_contact_callback, this);
 
-    sub_joy_msg = nh.subscribe("/joy", 1000, &GazeboA1ROS::joy_callback, this);
+    // sub_joy_msg = nh.subscribe("/joy", 1000, &GazeboA1ROS::joy_callback, this);
+
+    JoySubscriberPtr_.reset(new ros::Subscriber(nh.subscribe("/joy", 1000, &GazeboA1ROS::joy_callback, this)));
+    CmdSubscriberPtr_.reset();
 
     joy_cmd_ctrl_state = 0;
     joy_cmd_ctrl_state_change_request = false;
@@ -109,6 +112,23 @@ GazeboA1ROS::GazeboA1ROS(ros::NodeHandle &_nh)
     quat_x = MovingWindowFilter(5);
     quat_y = MovingWindowFilter(5);
     quat_z = MovingWindowFilter(5);
+
+    RegisterServers();
+}
+
+void GazeboA1ROS::RegisterServers()
+{
+    ControlA1StateChangeServer_ = nh.advertiseService(
+        "/GazeboA1ROS/ControlA1StateChange", &GazeboA1ROS::ControlA1StateChangeCallback, this);
+
+    ExitA1ControlServer_ = nh.advertiseService(
+        "/GazeboA1ROS/ExitA1Control", &GazeboA1ROS::ExitA1ControlCallback, this);
+
+    ChangeToNavigationModeServer_ = nh.advertiseService(
+        "/GazeboA1ROS/ChangeToNavigationMode", &GazeboA1ROS::ChangeToNavigationModeCallback, this);
+
+    ChangeToJoyModeServer_ = nh.advertiseService(
+        "/GazeboA1ROS/ChangeToJoyMode", &GazeboA1ROS::ChangeToJoyModeCallback, this);
 }
 
 bool GazeboA1ROS::update_foot_forces_grf(double dt)
@@ -448,8 +468,7 @@ void GazeboA1ROS::RR_foot_contact_callback(const geometry_msgs::WrenchStamped &f
     a1_ctrl_states.foot_force[3] = force.wrench.force.z;
 }
 
-void GazeboA1ROS::
-    joy_callback(const sensor_msgs::Joy::ConstPtr &joy_msg)
+void GazeboA1ROS::joy_callback(const sensor_msgs::Joy::ConstPtr &joy_msg)
 {
     // left updown
     joy_cmd_velz = joy_msg->axes[1] * JOY_CMD_BODY_HEIGHT_VEL;
@@ -477,4 +496,56 @@ void GazeboA1ROS::
         std::cout << "You have pressed the exit button!!!!" << std::endl;
         joy_cmd_exit = true;
     }
+}
+
+void GazeboA1ROS::CmdCallBack(const geometry_msgs::Twist::ConstPtr &CmdMsg)
+{
+    joy_cmd_velx = CmdMsg->linear.x;
+    joy_cmd_vely = CmdMsg->linear.y;
+    joy_cmd_velz = CmdMsg->linear.z * JOY_CMD_BODY_HEIGHT_VEL;
+
+    joy_cmd_roll_rate = CmdMsg->angular.x;
+    joy_cmd_pitch_rate = CmdMsg->angular.y;
+    joy_cmd_yaw_rate = CmdMsg->angular.z;
+}
+
+bool GazeboA1ROS::ControlA1StateChangeCallback(std_srvs::Trigger::Request &req,
+                                               std_srvs::Trigger::Response &res)
+{
+    joy_cmd_ctrl_state_change_request = true;
+
+    res.success = true;
+    return true;
+}
+
+bool GazeboA1ROS::ExitA1ControlCallback(std_srvs::Trigger::Request &req,
+                                        std_srvs::Trigger::Response &res)
+{
+    std::cout << "You have request the exit service!!!!" << std::endl;
+    joy_cmd_exit = true;
+
+    res.success = true;
+    return true;
+}
+
+bool GazeboA1ROS::ChangeToNavigationModeCallback(std_srvs::Trigger::Request &req,
+                                                 std_srvs::Trigger::Response &res)
+{
+    ROS_INFO("[A1Control_Info]: Change to navigation mode.");
+    JoySubscriberPtr_.reset();
+    CmdSubscriberPtr_.reset(new ros::Subscriber(nh.subscribe("/GazeboA1Control/Cmd_Vel", 1000, &GazeboA1ROS::CmdCallBack, this)));
+
+    res.success = true;
+    return true;
+}
+
+bool GazeboA1ROS::ChangeToJoyModeCallback(std_srvs::Trigger::Request &req,
+                                          std_srvs::Trigger::Response &res)
+{
+    ROS_INFO("[A1Control_Info]: Change to joy mode.");
+    JoySubscriberPtr_.reset(new ros::Subscriber(nh.subscribe("/joy", 1000, &GazeboA1ROS::joy_callback, this)));
+    CmdSubscriberPtr_.reset();
+
+    res.success = true;
+    return true;
 }

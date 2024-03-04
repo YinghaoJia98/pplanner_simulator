@@ -14,10 +14,10 @@
   <!--arg name="world_file" default="$(find planner_gazebo_sim)/worlds/maze.world"/-->
   <!--arg name="world_file" default="$(find planner_gazebo_sim)/worlds/maze2.world"/-->
   <!--arg name="world_file" default="$(find planner_gazebo_sim)/worlds/small_park_maze.world"/-->
-  <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/SmallParkMaze2.world"/>
+  <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/SmallParkMaze2.world"/> -->
   <!--arg name="world_file" default="$(find planner_gazebo_sim)/worlds/SmallParkMaze3.world"/-->
   <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/StairTestWorld1.world"/> -->
-  <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/StairTestWorld2.world"/> -->
+  <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/StairTestWorld2.world"/>
   <!-- <arg name="world_file" default="$(find unitree_gazebo)/worlds/stairs_single.world"/> -->
   <!-- <arg name="world_file" default="$(find unitree_gazebo)/worlds/stairs.world"/> -->
 

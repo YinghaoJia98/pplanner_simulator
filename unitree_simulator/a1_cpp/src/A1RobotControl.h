@@ -28,8 +28,8 @@
 
 #include "utils/filter.hpp"
 
-
-class A1RobotControl {
+class A1RobotControl
+{
 public:
     A1RobotControl();
 
@@ -63,10 +63,9 @@ private:
     Eigen::VectorXd lowerBound;
     Eigen::VectorXd upperBound;
 
-
     OsqpEigen::Solver solver;
 
-    //add a number of ROS debug topics
+    // add a number of ROS debug topics
     ros::NodeHandle nh;
     ros::Publisher pub_foot_start[NUM_LEG];
     ros::Publisher pub_foot_end[NUM_LEG];
@@ -75,9 +74,9 @@ private:
     visualization_msgs::Marker foot_end_marker[NUM_LEG];
     visualization_msgs::Marker foot_path_marker[NUM_LEG];
 
-    //debug topics
-//    ros::Publisher pub_root_lin_vel;
-//    ros::Publisher pub_root_lin_vel_d;
+    // debug topics
+    //    ros::Publisher pub_root_lin_vel;
+    //    ros::Publisher pub_root_lin_vel_d;
     ros::Publisher pub_terrain_angle;
 
     ros::Publisher pub_foot_pose_target_FL;
@@ -97,7 +96,7 @@ private:
 
     ros::Publisher pub_euler;
 
-    //MPC does not start for the first 10 ticks to prevent uninitialized NAN goes into joint_torques
+    // MPC does not start for the first 10 ticks to prevent uninitialized NAN goes into joint_torques
     int mpc_init_counter;
 
     std::string use_sim_time;
@@ -109,5 +108,4 @@ private:
     MovingWindowFilter recent_contact_z_filter[NUM_LEG];
 };
 
-
-#endif //A1_CPP_A1ROBOTCONTROL_H
+#endif // A1_CPP_A1ROBOTCONTROL_H

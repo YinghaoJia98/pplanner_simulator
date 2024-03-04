@@ -44,7 +44,10 @@
 
 #include "utils/filter.hpp"
 
-class GazeboA1ROS {
+#include <std_srvs/Trigger.h>
+
+class GazeboA1ROS
+{
 public:
     GazeboA1ROS(ros::NodeHandle &_nh);
 
@@ -93,6 +96,7 @@ public:
 
     void RR_foot_contact_callback(const geometry_msgs::WrenchStamped &force);
 
+    void RegisterServers();
 
 private:
     ros::NodeHandle nh;
@@ -109,7 +113,11 @@ private:
     ros::Subscriber sub_foot_contact_msg[4];
     ros::Subscriber sub_gt_pose_msg;
     ros::Subscriber sub_imu_msg;
-    ros::Subscriber sub_joy_msg;
+    // ros::Subscriber sub_joy_msg;
+
+    std::shared_ptr<ros::Subscriber> JoySubscriberPtr_;
+    std::shared_ptr<ros::Subscriber> CmdSubscriberPtr_;
+    void CmdCallBack(const geometry_msgs::Twist::ConstPtr &CmdMsg);
 
     // debug estimation
     ros::Publisher pub_estimated_pose;
@@ -167,7 +175,20 @@ private:
     MovingWindowFilter quat_x;
     MovingWindowFilter quat_y;
     MovingWindowFilter quat_z;
+
+    // navigation interface
+    ros::ServiceServer ControlA1StateChangeServer_;
+    bool ControlA1StateChangeCallback(std_srvs::Trigger::Request &req,
+                                      std_srvs::Trigger::Response &res);
+    ros::ServiceServer ExitA1ControlServer_;
+    bool ExitA1ControlCallback(std_srvs::Trigger::Request &req,
+                               std_srvs::Trigger::Response &res);
+    ros::ServiceServer ChangeToNavigationModeServer_;
+    bool ChangeToNavigationModeCallback(std_srvs::Trigger::Request &req,
+                                        std_srvs::Trigger::Response &res);
+    ros::ServiceServer ChangeToJoyModeServer_;
+    bool ChangeToJoyModeCallback(std_srvs::Trigger::Request &req,
+                                 std_srvs::Trigger::Response &res);
 };
 
-
-#endif //A1_CPP_GAZEBOA1ROS_H
+#endif // A1_CPP_GAZEBOA1ROS_H

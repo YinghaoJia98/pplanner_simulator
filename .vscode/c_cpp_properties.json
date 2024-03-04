@@ -16,6 +16,12 @@
         "/home/december/pplanner_ws/src/pplanner_rviz_plugin/include/**",
         "/home/december/pplanner_ws/src/pybind11_catkin/include/**",
         "/home/december/planner_simulator_ws/src/pplanner_simulator/unitree_simulator/unitree_guide/unitree_guide/include/**",
+        "/home/december/planner_simulator_ws/src/pplanner_simulator/unitree_simulator/a1_cpp/src/**",
+        "/home/december/planner_simulator_ws/devel/include/**",
+        "/home/december/test_ws/osqp-eigen-0.6.3/include/**",
+        "/home/december/test_ws/osqp-eigen-0.6.3/src/**",
+        "/home/december/test_ws/osqp_0.6.2_complete_sources/osqp/include/**",
+        "/home/december/test_ws/osqp_0.6.2_complete_sources/osqp/src/**",
         "/usr/include/**"
       ],
       "name": "ROS",

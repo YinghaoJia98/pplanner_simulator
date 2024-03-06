@@ -45,7 +45,7 @@
     <node name="message_to_tf" pkg="smb_gazebo" type="message_to_tf" output="screen">
       <param name="odometry_topic" value="ground_truth/state"/>
       <param name="frame_id" value="world"/>
-      <param name="child_frame_id" value="base"/>
+      <param name="child_frame_id" value="base_link"/>
     </node>
 
     <node name="odom_to_world_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 /world /odom 10"/>

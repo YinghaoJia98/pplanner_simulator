@@ -22,11 +22,11 @@
         <joint name="base_static_joint" type="fixed">
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <parent link="world"/>
-            <child link="base"/>
+            <child link="base_link"/>
         </joint>
     </xacro:if> 
 
-    <link name="base">
+    <link name="base_link">
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
@@ -37,7 +37,7 @@
 
     <joint name="floating_base" type="fixed">
         <origin rpy="0 0 0" xyz="0 0 0"/>
-        <parent link="base"/>
+        <parent link="base_link"/>
         <child link="trunk"/>
     </joint>
 
@@ -144,7 +144,7 @@
         <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
         <alwaysOn>true</alwaysOn>
         <updateRate>50.0</updateRate>
-        <bodyName>base</bodyName>
+        <bodyName>base_link</bodyName>
         <topicName>ground_truth/state</topicName>
         <gaussianNoise>0.01</gaussianNoise>
         <frameName>world</frameName>

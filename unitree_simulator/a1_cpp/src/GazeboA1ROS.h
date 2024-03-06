@@ -135,7 +135,7 @@ private:
 
     double joy_cmd_pitch_ang = 0.0;
     double joy_cmd_roll_ang = 0.0;
-    double joy_cmd_body_height = 0.3;
+    double joy_cmd_body_height = 0.27;
 
     //  0 is standing, 1 is walking
     int joy_cmd_ctrl_state = 0;

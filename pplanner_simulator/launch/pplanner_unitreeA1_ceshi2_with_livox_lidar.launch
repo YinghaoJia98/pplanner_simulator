@@ -59,7 +59,7 @@
   <include file="$(find a1_cpp)/launch/a1_ctrl_delay.launch">
 		<arg name="type" value="gazebo"/>
 		<arg name="solver_type" value="mpc"/>
-    <arg name="node_start_delay" value="11.0"/>
+    <arg name="node_start_delay" value="12.0"/>
 	</include>
 
 </launch>

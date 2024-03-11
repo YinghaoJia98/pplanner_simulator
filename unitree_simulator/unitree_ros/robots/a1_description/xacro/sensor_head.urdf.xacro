@@ -25,8 +25,8 @@
 		</xacro:VLP-16>
 
 		<xacro:include filename="$(find lidar_description)/urdf/OS1-64_2.urdf.xacro"/>
-		<xacro:OS1-64 parent="${name}_base_link" name="lidar_front" topic="lidar_front_points" hz="10" lasers="32" samples="440" min_range="0.7" gpu="false">
-			<origin xyz="0.3 0.0 0.075" rpy="0 0.5 0" />
+		<xacro:OS1-64 parent="${name}_base_link" name="lidar_front" topic="lidar_front_points" hz="10" lasers="32" samples="440" min_range="0.5" gpu="false">
+			<origin xyz="0.3 0.0 0.275" rpy="0 0.5 0" />
 		</xacro:OS1-64>
 
 		<!-- <xacro:include filename="$(find lidar_description)/urdf/VLP-16.urdf.xacro"/>
@@ -55,8 +55,8 @@
 		</xacro:HDL-32E> -->
 
 		<xacro:include filename="$(find lidar_description)/urdf/OS1-64_2.urdf.xacro"/>
-		<xacro:OS1-64 parent="${name}_base_link" name="lidar_back" topic="lidar_back_points" hz="10" lasers="32" samples="440" min_range="0.7" gpu="false">
-			<origin xyz="-0.3 0.0 0.075" rpy="0 -0.5 0" />
+		<xacro:OS1-64 parent="${name}_base_link" name="lidar_back" topic="lidar_back_points" hz="10" lasers="32" samples="440" min_range="0.5" gpu="false">
+			<origin xyz="-0.3 0.0 0.275" rpy="0 -0.5 0" />
 		</xacro:OS1-64>
 
 		<!-- <xacro:include filename="$(find lidar_description)/urdf/VLP-16.urdf.xacro"/>

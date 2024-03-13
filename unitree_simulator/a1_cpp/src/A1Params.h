@@ -6,21 +6,21 @@
 #define A1_CPP_A1PARAMS_H
 
 // control time related
-//#define CTRL_FREQUENCY 2.5  // ms
-#define GRF_UPDATE_FREQUENCY 2.5 // ms
-#define MAIN_UPDATE_FREQUENCY 2.5 // ms
-#define HARDWARE_FEEDBACK_FREQUENCY 2.0  // ms
+// #define CTRL_FREQUENCY 2.5  // ms
+#define GRF_UPDATE_FREQUENCY 2.5        // ms
+#define MAIN_UPDATE_FREQUENCY 2.5       // ms
+#define HARDWARE_FEEDBACK_FREQUENCY 2.0 // ms
 
 // constant define
 // joy stick command interprate
-#define JOY_CMD_BODY_HEIGHT_MAX 0.32     // m
-#define JOY_CMD_BODY_HEIGHT_MIN 0.1     // m
-#define JOY_CMD_BODY_HEIGHT_VEL 0.04    // m/s
+#define JOY_CMD_BODY_HEIGHT_MAX 0.32 // m
+#define JOY_CMD_BODY_HEIGHT_MIN 0.1  // m
+#define JOY_CMD_BODY_HEIGHT_VEL 0.04 // m/s
 #define JOY_CMD_VELX_MAX 0.6         // m/s
-#define JOY_CMD_VELY_MAX 0.3            // m/s
-#define JOY_CMD_YAW_MAX 0.8             // rad
-#define JOY_CMD_PITCH_MAX 0.4           // rad
-#define JOY_CMD_ROLL_MAX 0.4            // rad
+#define JOY_CMD_VELY_MAX 0.3         // m/s
+#define JOY_CMD_YAW_MAX 0.8          // rad
+#define JOY_CMD_PITCH_MAX 0.4        // rad
+#define JOY_CMD_ROLL_MAX 0.4         // rad
 
 // mpc
 #define PLAN_HORIZON 10
@@ -38,7 +38,7 @@
 #define FOOT_FORCE_LOW 30.0
 #define FOOT_FORCE_HIGH 80.0
 
-#define FOOT_SWING_CLEARANCE1 0.0f
+#define FOOT_SWING_CLEARANCE1 0.00f
 #define FOOT_SWING_CLEARANCE2 0.4f
 
 #define FOOT_DELTA_X_LIMIT 0.1
@@ -47,4 +47,4 @@
 #define ERROR_CURVE_ALREADY_SET 184
 #define ERROR_CURVE_NOT_SET 185
 
-#endif //A1_CPP_A1PARAMS_H
+#endif // A1_CPP_A1PARAMS_H

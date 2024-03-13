@@ -143,6 +143,8 @@ private:
     int prev_joy_cmd_ctrl_state = 0;
     bool joy_cmd_exit = false;
 
+    bool IfLastCmdIsSpace_;
+
     // following cade is also in VILEOM
     // add leg kinematics
     // the leg kinematics is relative to body frame, which is the center of the robot

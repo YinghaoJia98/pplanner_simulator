@@ -68,7 +68,7 @@
                     <pointCloudTopicName>/cam${camID}/point_cloud_${name}</pointCloudTopicName>
                     <frameName>camera_optical_${name}</frameName>
                     <pointCloudCutoff>0.3</pointCloudCutoff>
-                    <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+                    <pointCloudCutoffMax>3.5</pointCloudCutoffMax>
                     <distortionK1>0.0</distortionK1>
                     <distortionK2>0.0</distortionK2>
                     <distortionK3>0.0</distortionK3>

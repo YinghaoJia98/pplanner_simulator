@@ -66,6 +66,8 @@ GazeboA1ROS::GazeboA1ROS(ros::NodeHandle &_nh)
     prev_joy_cmd_ctrl_state = 0;
     joy_cmd_exit = false;
 
+    IfLastCmdIsSpace_ = true;
+
     _root_control = A1RobotControl(nh);
     a1_ctrl_states.reset();
     a1_ctrl_states.resetFromROSParam(nh);
@@ -500,6 +502,7 @@ void GazeboA1ROS::joy_callback(const sensor_msgs::Joy::ConstPtr &joy_msg)
 
 void GazeboA1ROS::CmdCallBack(const geometry_msgs::Twist::ConstPtr &CmdMsg)
 {
+    bool IfCurrentCmdIsSpace_;
     joy_cmd_velx = CmdMsg->linear.x;
     joy_cmd_vely = CmdMsg->linear.y;
     joy_cmd_velz = CmdMsg->linear.z * JOY_CMD_BODY_HEIGHT_VEL;
@@ -507,6 +510,22 @@ void GazeboA1ROS::CmdCallBack(const geometry_msgs::Twist::ConstPtr &CmdMsg)
     joy_cmd_roll_rate = CmdMsg->angular.x;
     joy_cmd_pitch_rate = CmdMsg->angular.y;
     joy_cmd_yaw_rate = CmdMsg->angular.z;
+    if ((joy_cmd_velx == 0) && (joy_cmd_yaw_rate == 0))
+    {
+        IfCurrentCmdIsSpace_ = true;
+    }
+    else
+    {
+        IfCurrentCmdIsSpace_ = false;
+    }
+
+    // if (((IfCurrentCmdIsSpace_) && (!IfLastCmdIsSpace_)) ||
+    //     ((!IfCurrentCmdIsSpace_) && (IfLastCmdIsSpace_)))
+    // {
+    //     joy_cmd_ctrl_state_change_request = true;
+    // }
+
+    IfLastCmdIsSpace_ = IfCurrentCmdIsSpace_;
 }
 
 bool GazeboA1ROS::ControlA1StateChangeCallback(std_srvs::Trigger::Request &req,

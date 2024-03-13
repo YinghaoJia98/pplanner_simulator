@@ -22,7 +22,10 @@
   <!-- <arg name="world_file" default="$(find unitree_gazebo)/worlds/stairs.world"/> -->
   <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/StairEnvironmentWorld2.world"/> -->
   <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/StairEnvironmentWorld3.world"/> -->
-  <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/StairEnvironmentWorld5.world"/>
+  <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/StairEnvironmentWorld5.world"/> -->
+  <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/StairEnvironmentWorld6.world"/> -->
+  <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/StairEnvironmentWorld7.world"/> -->
+  <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/StairEnvironmentWorld8.world"/>
 
   <!-- Static TF -->
   <node pkg="tf" type="static_transform_publisher" name="tf_53" args="0 0 0 0 0 0 world navigation 100" />

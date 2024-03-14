@@ -51,7 +51,9 @@
   <!--node name="pose_throttler" type="throttle" pkg="topic_tools" args="messages $(arg robot_name)/ground_truth/pose_with_covariance 10 /msf_core/pose" /-->
   <!-- <include file="$(find point_cloud_repub)/launch/point_cloud_repub.launch"/> -->
 
-  <include file="$(find elevation_mapping_cupy)/launch/ele_UnitreeA1.launch"/>
+  <!-- <include file="$(find elevation_mapping_cupy)/launch/ele_UnitreeA1_delay.launch">
+    <arg name="node_start_delay" value="12"/>
+	</include> -->
 
   <!--node pkg="rviz" type="rviz" name="pplanner_rviz" output="screen" args="-d $(find pplanner_simulator)/config/rviz/pplanner_smb.rviz"/-->
 
@@ -65,7 +67,11 @@
   <include file="$(find a1_cpp)/launch/a1_ctrl_delay.launch">
 		<arg name="type" value="gazebo"/>
 		<arg name="solver_type" value="mpc"/>
-    <arg name="node_start_delay" value="12"/>
+    <arg name="node_start_delay" value="15"/>
+	</include>
+
+  <include file="$(find elevation_mapping_cupy)/launch/ele_UnitreeA1_delay.launch">
+    <arg name="node_start_delay" value="15.5"/>
 	</include>
 
 </launch>

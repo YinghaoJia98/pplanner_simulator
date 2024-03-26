@@ -1,7 +1,7 @@
 <launch>
   <!-- All settings -->
   <arg name="robot_name" default="smb"/>
-  <arg name="gazebo_gui_en" default="false"/>
+  <arg name="gazebo_gui_en" default="true"/>
   <arg name="use_sim_time" default="true"/>
   <arg name="rviz_en" default="true" />
   <arg name="launch_prefix" default=""/> <!-- gdb -ex run //args -->
@@ -41,7 +41,7 @@
   <!--arg name="odometry_topic" default="/ground_truth/state"/-->
   <!--node name="pose_throttler" type="throttle" pkg="topic_tools" args="messages $(arg robot_name)/ground_truth/pose_with_covariance 10 /msf_core/pose" /-->
   <!-- <include file="$(find point_cloud_repub)/launch/point_cloud_repub.launch"/> -->
-  <include file="$(find elevation_mapping_cupy)/launch/ele_ceshi2_gb.launch"/>
+  <include file="$(find elevation_mapping_cupy)/launch/EleForVRP.launch"/>
   <!--node pkg="rviz" type="rviz" name="pplanner_rviz" output="screen" args="-d $(find pplanner_simulator)/config/rviz/pplanner_smb.rviz"/-->
 
 </launch>

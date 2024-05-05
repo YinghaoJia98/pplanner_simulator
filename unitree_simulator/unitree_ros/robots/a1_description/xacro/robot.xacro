@@ -160,7 +160,7 @@
 	</xacro:sensor_head> -->
 
     <xacro:depthCamera camID="1" name="face">
-        <origin rpy="${PI} 0 0" xyz="0.35 0.0125 0.15"/>
+        <origin rpy="${PI} 0 0" xyz="0.25 0.0125 0.15"/>
     </xacro:depthCamera>
 
     <xacro:depthCamera camID="2" name="chin">
@@ -176,7 +176,7 @@
     </xacro:depthCamera>
 
     <xacro:depthCamera camID="5" name="rearDown">
-        <origin rpy="${PI} 0.2618 ${PI}" xyz="-0.35 -0.0125 0.15"/>
+        <origin rpy="${PI} 0.2618 ${PI}" xyz="-0.25 -0.0125 0.15"/>
     </xacro:depthCamera>
 
 </robot>

@@ -82,6 +82,8 @@ int main(int argc, char **argv)
                 std::terminate();
                 break;
             }
+            // ros::Time now2 = ros::Time::now();
+            // std::cout<<"Time used for calculation is "<<now2-now<<std::endl;
         } });
 
     // Thread 2: update robot states, compute desired swing legs forces, compute desired joint torques, and send commands

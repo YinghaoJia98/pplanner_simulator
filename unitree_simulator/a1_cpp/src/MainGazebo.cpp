@@ -122,6 +122,8 @@ int main(int argc, char **argv)
                 std::terminate();
                 break;
             }
+            // ros::Time now2 = ros::Time::now();
+            // std::cout<<"Time used for publication is "<<now2-now<<std::endl;
         } });
 
     ros::AsyncSpinner spinner(12);

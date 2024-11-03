@@ -16,7 +16,7 @@
 	<xacro:include filename="$(find smb_description)/urdf/smb_utils.urdf.xacro" />
 
 	<!-- Base link is the robot chassis -->
-	<link name="$(arg robot_namespace)_base_link">
+	<link name="base_link">
 		<!-- <visual>
 			<origin xyz="0 0 0" rpy="0 0 0" />
 			<geometry>
@@ -41,12 +41,12 @@
 		</collision>
 	</link>
 
-	<gazebo reference="$(arg robot_namespace)_base_link">
+	<gazebo reference="base_link">
 		<material>Gazebo/Orange</material>
 	</gazebo>
 
 	<!-- Interial link stores the robot's inertial information -->
-	<link name="$(arg robot_namespace)_inertial_link">
+	<link name="inertial_link">
 		<inertial>
 			<mass value="${chassisMass}" />
 			<origin xyz="0 0 0" />
@@ -54,23 +54,23 @@
 		</inertial>
 	</link>
 
-	<joint name="$(arg robot_namespace)_inertial_joint" type="fixed">
+	<joint name="inertial_joint" type="fixed">
 		<origin xyz="0 0 0" rpy="0 0 0" />
-		<parent link="$(arg robot_namespace)_base_link" />
-		<child link="$(arg robot_namespace)_inertial_link" />
+		<parent link="base_link" />
+		<child link="inertial_link" />
 	</joint>
 
 	<!-- SMB wheel macros -->
-	<xacro:smb_wheel wheel_prefix="$(arg robot_namespace)_LF" BaseNs="$(arg robot_namespace)">
+	<xacro:smb_wheel wheel_prefix="LF">
 		<origin xyz="${frontWheelX} ${chassisWidth/2+wheelClearance+wheelWidth/2} ${-wheelHeight}" rpy="0 0 0" />
 	</xacro:smb_wheel>
-	<xacro:smb_wheel wheel_prefix="$(arg robot_namespace)_RF" BaseNs="$(arg robot_namespace)">
+	<xacro:smb_wheel wheel_prefix="RF">
 		<origin xyz="${frontWheelX} ${-chassisWidth/2-wheelClearance-wheelWidth/2} ${-wheelHeight}" rpy="0 0 0" />
 	</xacro:smb_wheel>
-	<xacro:smb_wheel wheel_prefix="$(arg robot_namespace)_LH" BaseNs="$(arg robot_namespace)">
+	<xacro:smb_wheel wheel_prefix="LH">
 		<origin xyz="${backWheelX} ${chassisWidth/2+wheelClearance+wheelWidth/2} ${-wheelHeight}" rpy="0 0 0" />
 	</xacro:smb_wheel>
-	<xacro:smb_wheel wheel_prefix="$(arg robot_namespace)_RH" BaseNs="$(arg robot_namespace)">
+	<xacro:smb_wheel wheel_prefix="RH">
 		<origin xyz="${backWheelX} ${-chassisWidth/2-wheelClearance-wheelWidth/2} ${-wheelHeight}" rpy="0 0 0" />
 	</xacro:smb_wheel>
 
@@ -83,7 +83,7 @@
 		<plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
 			<alwaysOn>true</alwaysOn>
 			<updateRate>50.0</updateRate>
-			<bodyName>$(arg robot_namespace)_base_link</bodyName>
+			<bodyName>base_link</bodyName>
 			<topicName>ground_truth/state</topicName>
 			<gaussianNoise>0.001</gaussianNoise>
 			<frameName>world</frameName>
@@ -93,7 +93,7 @@
 	</gazebo>
 
 	<xacro:include filename="$(find smb_description)/urdf/sensor_head_2.urdf.xacro"/>
-	<xacro:sensor_head parent="$(arg robot_namespace)_base_link" name="$(arg robot_namespace)_sensor_head">
+	<xacro:sensor_head parent="base_link" name="sensor_head">
 		<origin xyz="0.2 0 0.576" rpy="0 0 0" />
 	</xacro:sensor_head>
 </robot>

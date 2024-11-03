@@ -30,15 +30,20 @@
     <node name="message_to_tf" pkg="smb_gazebo" type="message_to_tf" output="screen">
       <param name="odometry_topic" value="ground_truth/state"/>
       <param name="frame_id" value="world"/>
+      <param name="footprint_frame_id" value="$(arg robot_namespace)_base_footprint"/>
+      <param name="stabilized_frame_id" value="$(arg robot_namespace)_base_stabilized"/>
     </node>
 
     <node name="odom_to_world_tf" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 /world /odom 10"/>
 
     <!-- Load controller configuration -->
     <rosparam command="load" file="$(find smb_lowlevel_controller)/config/control_sim.yaml" />
+    <param name="smb_velocity_controller/left_wheel" value="['$(arg robot_namespace)_LF_WHEEL', '$(arg robot_namespace)_LH_WHEEL']"/>
+    <param name="smb_velocity_controller/right_wheel" value="['$(arg robot_namespace)_RF_WHEEL', '$(arg robot_namespace)_RH_WHEEL']"/>
 
     <!-- Spawn controllers -->
-    <node name="controller_spawner" pkg="controller_manager" type="spawner" args="smb_joint_publisher smb_velocity_controller"/>
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" args="$(arg robot_namespace)/smb_joint_publisher $(arg robot_namespace)/smb_velocity_controller">
+    </node>
 
     <node pkg="twist_mux" type="twist_mux" name="twist_mux">
       <rosparam command="load" file="$(find smb_lowlevel_controller)/config/twist_mux.yaml" />

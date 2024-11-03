@@ -43,6 +43,7 @@
 
   <group ns="robot2">
     <include file="$(find smb_gazebo)/launch/spawn_smb.launch">
+      <arg name="robot_namespace" value='/SmbB'/>
       <arg name="joystick" value="false"/>
       <arg name="x" value="5.0" />
       <arg name="y" value="0.0" />

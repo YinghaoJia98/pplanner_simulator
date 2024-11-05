@@ -2,7 +2,7 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="sensor_head">
 
-	<xacro:macro name="sensor_head" params="*origin parent:=base_link name:=sensor_head">
+	<xacro:macro name="sensor_head" params="*origin parent:=base_link name:=sensor_head RobotNs:=robot">
 		<joint name="${name}_base_mount_joint" type="fixed">
 			<xacro:insert_block name="origin" />
 			<parent link="${parent}"/>
@@ -20,7 +20,7 @@
 		<xacro:arg name="gpu" default="true"/>
 		
 		<xacro:include filename="$(find lidar_description)/urdf/VLP-16-2.urdf.xacro"/>
-		<xacro:VLP-16 parent="${name}_base_link" name="${name}_velodyne" topic="${name}_velodyne_points" hz="10" lasers="32" samples="440" gpu="$(arg gpu)" collision_range="0.2" min_range="0.2">
+		<xacro:VLP-16 parent="${name}_base_link" name="${name}_velodyne" topic="${name}_velodyne_points" hz="10" lasers="32" samples="440" gpu="$(arg gpu)" collision_range="0.2" min_range="0.2" RobotNs="${RobotNs}">
 			<origin xyz="0.03 0 0.08" rpy="0 0 0" />
 		</xacro:VLP-16>
 

@@ -31,5 +31,14 @@
 		<!-- <xacro:VLP-16 parent="${name}_base_link" name="${name}_Back_Velodyne" topic="${name}_Back_Velodyne_Points" hz="10" lasers="32" samples="440" gpu="false" collision_range="0.2" min_range="1.0" RobotNs="${RobotNs}">
 			<origin xyz="-0.05 0.3 -0.1" rpy="0 -0.5 0" />
 		</xacro:VLP-16> -->
+
+		<!-- <xacro:include filename="$(find smb_description)/urdf/depthCamera.xacro"/>
+		<xacro:depthCamera parent="${name}_base_link" name="${name}_Front">
+        	<origin rpy="0 0 0" xyz="0.9 -0.0125 0.15"/>
+    	</xacro:depthCamera>
+
+		<xacro:depthCamera parent="${name}_base_link" name="${name}_Back">
+        	<origin rpy="0 0 0" xyz="-0.9 -0.0125 0.15"/>
+    	</xacro:depthCamera> -->
 	</xacro:macro>
 </robot>

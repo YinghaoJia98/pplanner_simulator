@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="depthCamera" params="parent camID name *origin">
-        <joint name="camera_joint_${name}" type="fixed">
+    <xacro:macro name="depthCamera" params="parent name *origin">
+        <joint name="${name}_DepthCamera_joint" type="fixed">
             <xacro:insert_block name="origin"/>
             <parent link="${parent}"/>
-            <child link="camera_${name}"/>
+            <child link="${name}_DepthCamera"/>
         </joint>
 
-        <link name="camera_${name}">
+        <link name="${name}_DepthCamera">
             <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
@@ -30,18 +30,18 @@
             </inertial>
         </link>
 
-        <joint name="camera_optical_joint_${name}" type="fixed">
+        <joint name="${name}_DepthCamera_optical_joint" type="fixed">
             <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
-            <parent link="camera_${name}"/>
-            <child link="camera_optical_${name}"/>
+            <parent link="${name}_DepthCamera"/>
+            <child link="${name}_DepthCamera_optical"/>
         </joint>
 
-        <link name="camera_optical_${name}">
+        <link name="${name}_DepthCamera_optical">
         </link>
 
-        <gazebo reference="camera_${name}">
+        <gazebo reference="${name}_DepthCamera">
             <!-- <material>Gazebo/Black</material> -->
-            <sensor name="camera_${name}_camera" type="depth">
+            <sensor name="${name}_DepthCamera_sensor" type="depth">
                 <update_rate>16</update_rate>
                 <camera>
                     <horizontal_fov>2.094</horizontal_fov>
@@ -55,18 +55,18 @@
                         <far>5</far>
                     </clip>
                 </camera>
-                <plugin name="camera_${name}_controller" filename="libgazebo_ros_openni_kinect.so">
+                <plugin name="camera_controller" filename="libgazebo_ros_openni_kinect.so">
                     <baseline>0.025</baseline>
                     <alwaysOn>true</alwaysOn>
-                    <updateRate>0.0</updateRate>
-                    <cameraName>camera_${name}</cameraName>
-                    <imageTopicName>/camera_${name}/color/image_raw</imageTopicName>
-                    <cameraInfoTopicName>/camera_${name}/color/camera_info</cameraInfoTopicName>
-                    <depthImageTopicName>/camera_${name}/depth/image_raw</depthImageTopicName>
-                    <depthImageInfoTopicName>/camera_${name}/depth/camera_info</depthImageInfoTopicName>
+                    <updateRate>1.0</updateRate>
+                    <cameraName>${name}_DepthCamera</cameraName>
+                    <imageTopicName>${name}_DepthCamera/color/image_raw</imageTopicName>
+                    <cameraInfoTopicName>${name}_DepthCamera/color/camera_info</cameraInfoTopicName>
+                    <depthImageTopicName>${name}_DepthCamera/depth/image_raw</depthImageTopicName>
+                    <depthImageInfoTopicName>${name}_DepthCamera/depth/camera_info</depthImageInfoTopicName>
                     <!-- <pointCloudTopicName>/camera_${name}/depth/points</pointCloudTopicName> -->
-                    <pointCloudTopicName>/cam${camID}/point_cloud_${name}</pointCloudTopicName>
-                    <frameName>camera_optical_${name}</frameName>
+                    <pointCloudTopicName>${name}_DepthCamera/depth/points</pointCloudTopicName>
+                    <frameName>${name}_DepthCamera_optical</frameName>
                     <pointCloudCutoff>0.3</pointCloudCutoff>
                     <pointCloudCutoffMax>3.9</pointCloudCutoffMax>
                     <distortionK1>0.0</distortionK1>

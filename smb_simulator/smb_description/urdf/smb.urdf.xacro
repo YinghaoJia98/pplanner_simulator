@@ -92,8 +92,8 @@
 		</plugin>
 	</gazebo>
 
-	<xacro:include filename="$(find smb_description)/urdf/sensor_head_2.urdf.xacro"/>
-	<xacro:sensor_head parent="$(arg robot_namespace)_base_link" name="$(arg robot_namespace)_sensor_head" RobotNs="$(arg robot_namespace)">
+	<xacro:include filename="$(find smb_description)/urdf/SensorHead.urdf.xacro"/>
+	<xacro:sensor_head parent="$(arg robot_namespace)_base_link" name="$(arg robot_namespace)_Sensor_Head" RobotNs="$(arg robot_namespace)">
 		<origin xyz="0.2 0 0.576" rpy="0 0 0" />
 	</xacro:sensor_head>
 </robot>

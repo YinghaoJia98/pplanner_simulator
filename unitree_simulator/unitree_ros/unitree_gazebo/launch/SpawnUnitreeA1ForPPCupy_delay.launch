@@ -1,6 +1,5 @@
 <launch>
     <arg name="rname" default="a1"/>
-    <arg name="conveyor" default="0"/>
     <arg name="robot_path" value="(find $(arg rname)_description)"/>
     <arg name="dollar" value="$"/>
     <!-- Debug mode will hung up the robot, use "true" or "false" to switch it. -->
@@ -10,7 +9,7 @@
     
     <!-- Load the URDF into the ROS Parameter Server -->
     <param name="robot_description"
-           command="$(find xacro)/xacro --inorder '$(arg dollar)$(arg robot_path)/xacro/robot.xacro' 
+           command="$(find xacro)/xacro --inorder '$(arg dollar)$(arg robot_path)/xacro/RobotForPPCupy.xacro' 
            DEBUG:=$(arg user_debug)"/>
 
     <!-- Run a python script to the send a service call to gazebo_ros to spawn a URDF robot -->
@@ -76,12 +75,6 @@
         <!--remap from="cmd_vel" to="smb_velocity_controller/cmd_vel"/-->
         
       </node>
-    </group>
-
-    <!-- launch conveyor belt -->
-    <group if="$(eval conveyor == 1)">
-        <node ns="conveyor" name="spawn_model_belt" pkg="gazebo_ros" type="spawn_model" args="-file $(find demo_world)/urdf/conveyor.urdf -urdf -model conveyor_belt" respawn="false" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " />
-        <node name="cube_spawner" pkg="demo_world" type="demo.py" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' "/>
     </group>
 
 </launch>

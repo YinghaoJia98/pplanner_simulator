@@ -1,7 +1,6 @@
 <launch>
   <!-- All settings -->
-  <!-- <arg name="robot_name" default="unitree"/> -->
-  <arg name="gazebo_gui_en" default="true"/>
+  <arg name="gazebo_gui_en" default="false"/>
   <arg name="use_sim_time" default="true"/>
   <arg name="rviz_en" default="true" />
   <arg name="launch_prefix" default=""/> <!-- gdb -ex run //args -->
@@ -41,21 +40,15 @@
     <arg name="verbose" value="false"/>
 	</include>
 
-  <include file="$(find unitree_gazebo)/launch/spawn_unitreeA1_delay.launch">
+  <include file="$(find unitree_gazebo)/launch/SpawnUnitreeA1ForPPCupy_delay.launch">
     <arg name="joystick" value="false"/>
     <arg name="node_start_delay" value="10.0"/>
   </include>
-  <!--node pkg="topic_tools" type="relay" name="vlp_relay" args="/velodyne_points /input_pointcloud" /-->
-  <!--node pkg="topic_tools" type="relay" name="front_lidar_relay" args="/lidar_front_points /input_pointcloud" /-->
-  <!--arg name="odometry_topic" default="/ground_truth/state"/-->
-  <!--node name="pose_throttler" type="throttle" pkg="topic_tools" args="messages $(arg robot_name)/ground_truth/pose_with_covariance 10 /msf_core/pose" /-->
-  <!-- <include file="$(find point_cloud_repub)/launch/point_cloud_repub.launch"/> -->
+
 
   <!-- <include file="$(find elevation_mapping_cupy)/launch/ele_UnitreeA1_delay.launch">
     <arg name="node_start_delay" value="12"/>
 	</include> -->
-
-  <!--node pkg="rviz" type="rviz" name="pplanner_rviz" output="screen" args="-d $(find pplanner_simulator)/config/rviz/pplanner_smb.rviz"/-->
 
   <!-- <node pkg="unitree_guide" type="junior_ctrl" name="unitree_junior_ctrl" output="screen">
     <remap from="cmd_vel" to="unitree_velocity_controller/cmd_vel"/>

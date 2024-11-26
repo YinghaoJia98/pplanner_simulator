@@ -30,11 +30,13 @@
 		<arg name="debug" value="false"/>
     <arg name="verbose" value="false"/>
 	</include>
-  <include file="$(find smb_gazebo)/launch/spawn_smb.launch">
+  <include file="$(find smb_gazebo)/launch/SpawnSmbRobot.launch">
     <arg name="joystick" value="true"/>
     <arg name="x" value="0.0" />
     <arg name="y" value="0.0" />
     <arg name="z" value="0.6" />
+    <arg name="robot_namespace" value='/SmbA'/>
+    <arg name="robot_PureName" value="SmbA"/>
   </include>
   <!--node pkg="topic_tools" type="relay" name="vlp_relay" args="/velodyne_points /input_pointcloud" /-->
   <!--node pkg="topic_tools" type="relay" name="front_lidar_relay" args="/lidar_front_points /input_pointcloud" /-->

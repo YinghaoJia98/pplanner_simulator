@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(gazebo REQUIRED)
+include_directories(/usr/include/sdformat-9.10)
 
 catkin_package(
     CATKIN_DEPENDS 

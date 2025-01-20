@@ -25,6 +25,7 @@ include_directories(include
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
+  /usr/include/sdformat-9.10
 )
 
 link_directories(

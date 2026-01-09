@@ -82,5 +82,7 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp"
-    }
+    },
+    "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+    "ROS2.distro": "noetic"
 }

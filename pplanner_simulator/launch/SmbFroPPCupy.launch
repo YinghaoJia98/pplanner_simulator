@@ -16,7 +16,8 @@
   <!--arg name="world_file" default="$(find planner_gazebo_sim)/worlds/SmallParkMaze3.world"/-->
   <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/UnstructedEnvironment2.world"/> -->
 
-  <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/SmallParkMaze2.world"/>
+  <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/SmallParkMaze2.world"/> -->
+  <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/NewSmallParkMazeEnv1.world"/>
   <!-- <arg name="world_file" default="$(find planner_gazebo_sim)/worlds/Test20241226.world"/> -->
 
   <!-- Static TF -->

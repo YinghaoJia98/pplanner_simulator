@@ -137,10 +137,10 @@ void GazeboA1ROS::RegisterServers()
         "/GazeboA1ROS/ChangeToJoyMode", &GazeboA1ROS::ChangeToJoyModeCallback, this);
 
     ChangeFixedStandModeServer_ = nh.advertiseService(
-        "/GazeboA1ROS/ChangeFixedStandMode", &GazeboA1ROS::ChangeFixedStandModeCallback, this);
+        "/GazeboA1ROS/ChangeA1FixedStandMode", &GazeboA1ROS::ChangeFixedStandModeCallback, this);
 
     initializeControllerServer_ = nh.advertiseService(
-        "/GazeboA1ROS/initializeController", &GazeboA1ROS::initializeControllerCallback, this);
+        "/GazeboA1ROS/InitializeA1Controller", &GazeboA1ROS::initializeControllerCallback, this);
 }
 
 bool GazeboA1ROS::update_foot_forces_grf(double dt)

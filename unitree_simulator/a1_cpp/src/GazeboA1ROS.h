@@ -96,6 +96,9 @@ public:
 
     void RR_foot_contact_callback(const geometry_msgs::WrenchStamped &force);
 
+    void resetTheCommandForFixedStandMode();
+    void publishFixedStandMode();
+
     void RegisterServers();
 
 private:
@@ -178,6 +181,18 @@ private:
     MovingWindowFilter quat_y;
     MovingWindowFilter quat_z;
 
+    // parameters for fixed stand mode.
+    bool hasInitializedTheController;
+    bool isFixedStandMode;
+    float targetJointPoseForFixedStandMode[12] = {0.0f, 0.67f, -1.3f,
+                                                  0.0f, 0.67f, -1.3f,
+                                                  0.0f, 0.67f, -1.3f,
+                                                  0.0f, 0.67f, -1.3f};
+    float startJointPoseForFixedStandMode[12];
+    float stepNumForChangingToFixedStandMode;
+    float currentStepPercentForFixedStandMode;
+    unitree_legged_msgs::LowCmd lowCmdForFixedStandMode;
+
     // navigation interface
     ros::ServiceServer ControlA1StateChangeServer_;
     bool ControlA1StateChangeCallback(std_srvs::Trigger::Request &req,
@@ -190,6 +205,14 @@ private:
                                         std_srvs::Trigger::Response &res);
     ros::ServiceServer ChangeToJoyModeServer_;
     bool ChangeToJoyModeCallback(std_srvs::Trigger::Request &req,
+                                 std_srvs::Trigger::Response &res);
+
+    ros::ServiceServer ChangeFixedStandModeServer_;
+    bool ChangeFixedStandModeCallback(std_srvs::Trigger::Request &req,
+                                       std_srvs::Trigger::Response &res);
+
+    ros::ServiceServer initializeControllerServer_;
+    bool initializeControllerCallback(std_srvs::Trigger::Request &req,
                                  std_srvs::Trigger::Response &res);
 };
 

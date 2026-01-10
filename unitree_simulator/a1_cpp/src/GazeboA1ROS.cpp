@@ -61,7 +61,7 @@ GazeboA1ROS::GazeboA1ROS(ros::NodeHandle &_nh)
     JoySubscriberPtr_.reset(new ros::Subscriber(nh.subscribe("/joy", 1000, &GazeboA1ROS::joy_callback, this)));
     CmdSubscriberPtr_.reset();
 
-    joy_cmd_ctrl_state = 0;
+    joy_cmd_ctrl_state = 1;
     joy_cmd_ctrl_state_change_request = false;
     prev_joy_cmd_ctrl_state = 0;
     joy_cmd_exit = false;
@@ -115,6 +115,10 @@ GazeboA1ROS::GazeboA1ROS(ros::NodeHandle &_nh)
     quat_y = MovingWindowFilter(5);
     quat_z = MovingWindowFilter(5);
 
+    hasInitializedTheController = false;
+    isFixedStandMode = true;
+    stepNumForChangingToFixedStandMode = 1000.0f;
+    currentStepPercentForFixedStandMode = 0.0f;
     RegisterServers();
 }
 
@@ -131,16 +135,40 @@ void GazeboA1ROS::RegisterServers()
 
     ChangeToJoyModeServer_ = nh.advertiseService(
         "/GazeboA1ROS/ChangeToJoyMode", &GazeboA1ROS::ChangeToJoyModeCallback, this);
+
+    ChangeFixedStandModeServer_ = nh.advertiseService(
+        "/GazeboA1ROS/ChangeFixedStandMode", &GazeboA1ROS::ChangeFixedStandModeCallback, this);
+
+    initializeControllerServer_ = nh.advertiseService(
+        "/GazeboA1ROS/initializeController", &GazeboA1ROS::initializeControllerCallback, this);
 }
 
 bool GazeboA1ROS::update_foot_forces_grf(double dt)
 {
+    if (!hasInitializedTheController)
+    {
+        return true;
+    }
+    if (isFixedStandMode)
+    {
+        // in fixed stand mode, does not compute grf.
+        return true;
+    }
     a1_ctrl_states.foot_forces_grf = _root_control.compute_grf(a1_ctrl_states, dt);
     return true;
 }
 
 bool GazeboA1ROS::main_update(double t, double dt)
 {
+    if (!hasInitializedTheController)
+    {
+        return true;
+    }
+    if (isFixedStandMode)
+    {
+        // in fixed stand mode, does not update ctrl states.
+        return true;
+    }
     if (joy_cmd_exit)
     {
         return false;
@@ -256,6 +284,16 @@ bool GazeboA1ROS::main_update(double t, double dt)
 
 bool GazeboA1ROS::send_cmd()
 {
+    if (!hasInitializedTheController)
+    {
+        return true;
+    }
+    if (isFixedStandMode)
+    {
+        publishFixedStandMode();
+        return true;
+    }
+    
     _root_control.compute_joint_torques(a1_ctrl_states);
 
     // send control cmd to robot via ros topic
@@ -273,6 +311,53 @@ bool GazeboA1ROS::send_cmd()
     }
 
     return true;
+}
+
+void GazeboA1ROS::resetTheCommandForFixedStandMode()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 0].mode = 10;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 0].q = a1_ctrl_states.joint_pos(i * 3 + 0);
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 0].dq = 0;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 0].Kp = 180;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 0].Kd = 8;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 0].tau = 0.0;
+
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 1].mode = 10;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 1].q = a1_ctrl_states.joint_pos(i * 3 + 1);
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 1].dq = 0;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 1].Kp = 180;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 1].Kd = 8;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 1].tau = 0.0;
+
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 2].mode = 10;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 2].q = a1_ctrl_states.joint_pos(i * 3 + 2);
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 2].dq = 0;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 2].Kp = 300;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 2].Kd = 15;
+        lowCmdForFixedStandMode.motorCmd[i * 3 + 2].tau = 0.0;
+
+        startJointPoseForFixedStandMode[i * 3 + 0] = a1_ctrl_states.joint_pos(i * 3 + 0);
+        startJointPoseForFixedStandMode[i * 3 + 1] = a1_ctrl_states.joint_pos(i * 3 + 1);
+        startJointPoseForFixedStandMode[i * 3 + 2] = a1_ctrl_states.joint_pos(i * 3 + 2);
+    }
+    currentStepPercentForFixedStandMode = 0.0f;
+}
+
+void GazeboA1ROS::publishFixedStandMode()
+{
+
+    currentStepPercentForFixedStandMode += (float)1.0f / stepNumForChangingToFixedStandMode;
+    if (currentStepPercentForFixedStandMode > 1.0f)
+    {
+        currentStepPercentForFixedStandMode = 1.0f;
+    }
+    for (int i = 0; i < 12; i++)
+    {
+        lowCmdForFixedStandMode.motorCmd[i].q = startJointPoseForFixedStandMode[i] + (targetJointPoseForFixedStandMode[i] - startJointPoseForFixedStandMode[i]) * currentStepPercentForFixedStandMode;
+        pub_joint_cmd[i].publish(lowCmdForFixedStandMode.motorCmd[i]);
+    }
 }
 
 // callback functions
@@ -565,6 +650,45 @@ bool GazeboA1ROS::ChangeToJoyModeCallback(std_srvs::Trigger::Request &req,
     JoySubscriberPtr_.reset(new ros::Subscriber(nh.subscribe("/joy", 1000, &GazeboA1ROS::joy_callback, this)));
     CmdSubscriberPtr_.reset();
 
+    res.success = true;
+    return true;
+}
+
+bool GazeboA1ROS::ChangeFixedStandModeCallback(std_srvs::Trigger::Request &req,
+                                               std_srvs::Trigger::Response &res)
+{
+    isFixedStandMode = !isFixedStandMode;
+    if (isFixedStandMode)
+    {
+        ROS_INFO("[A1Control_Info]: Change to Fixed Stand Mode.");
+        resetTheCommandForFixedStandMode();
+    }
+    else
+    {
+        ROS_INFO("[A1Control_Info]: Exit Fixed Stand Mode.");
+    }
+
+    res.success = true;
+    return true;
+}
+
+bool GazeboA1ROS::initializeControllerCallback(std_srvs::Trigger::Request &req,
+                                            std_srvs::Trigger::Response &res)
+{
+    if (hasInitializedTheController)
+    {
+        ROS_WARN("[A1Control_Warning]: The controller has already been initialized. This action would pause the controller.");
+        hasInitializedTheController = false;
+        res.success = true;
+        return true;
+    }
+    else
+    {
+        ROS_INFO("[A1Control_Info]: Initializing the controller...");
+        resetTheCommandForFixedStandMode();
+        isFixedStandMode = true;
+        hasInitializedTheController = true;
+    }
     res.success = true;
     return true;
 }

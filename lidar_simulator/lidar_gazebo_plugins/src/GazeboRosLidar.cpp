@@ -70,7 +70,7 @@ GZ_REGISTER_SENSOR_PLUGIN(GazeboRosLidar)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constructor
-GazeboRosLidar::GazeboRosLidar() : nh_(NULL), gaussian_noise_(0), min_range_(0), max_range_(0)
+GazeboRosLidar::GazeboRosLidar() : nh_(NULL), gaussian_noise_(0), min_range_(0), max_range_(0), organize_pointcloud_(false)
 {
 }
 
@@ -149,6 +149,13 @@ void GazeboRosLidar::Load(sensors::SensorPtr _parent, sdf::ElementPtr _sdf)
     gaussian_noise_ = 0;
   } else {
     gaussian_noise_ = _sdf->GetElement("gaussianNoise")->Get<double>();
+  }
+
+  if (!_sdf->HasElement("organizePointcloud")) {
+    ROS_INFO("Lidar plugin missing <organizePointcloud>, defaults to false");
+    organize_pointcloud_ = false;
+  } else {
+    organize_pointcloud_ = _sdf->GetElement("organizePointcloud")->Get<bool>();
   }
 
   // Make sure the ROS node for Gazebo has already been initialized
@@ -293,8 +300,26 @@ void GazeboRosLidar::OnScan(ConstLaserScanStampedPtr& _msg)
 
       // Range
       double r = _msg->scan().ranges(i + j * rangeCount);
-      if ((MIN_RANGE >= r) || (r >= MAX_RANGE)) {
+      // if ((MIN_RANGE >= r) || (r >= MAX_RANGE)) {
+      //   continue;
+      // }
+
+      if (MIN_RANGE >= r)
+      {
         continue;
+      }
+
+      if (r >= MAX_RANGE)
+      {
+        if (organize_pointcloud_)
+        {
+          // set to max range + 1 meter
+          r = MAX_RANGE + 1.0;
+        }
+        else
+        {
+          continue;
+        }
       }
 
       // Noise
@@ -322,7 +347,7 @@ void GazeboRosLidar::OnScan(ConstLaserScanStampedPtr& _msg)
       }
 
       // pAngle is rotated by yAngle:
-      if ((MIN_RANGE < r) && (r < MAX_RANGE)) {
+      if ((MIN_RANGE < r) && ((r < MAX_RANGE) || organize_pointcloud_)) {
         *((float*)(ptr + 0)) = r * cos(pAngle) * cos(yAngle);
         *((float*)(ptr + 4)) = r * cos(pAngle) * sin(yAngle);
 #if GAZEBO_MAJOR_VERSION > 2

@@ -111,6 +111,8 @@ namespace gazebo
     /// \brief Maximum range to publish
     private: double max_range_;
 
+    private: bool organize_pointcloud_;
+
     /// \brief Gaussian noise
     private: double gaussian_noise_;
 

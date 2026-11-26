@@ -3221,7 +3221,7 @@
         <instance_geometry url="#平面_007-mesh" name="平面.009"/>
       </node>
       <node id="立方体_031" name="立方体.031" type="NODE">
-        <matrix sid="transform">1.5 0 0 -6.5 0 0.05 0 12.2 0 0 1.5 4.5 0 0 0 1</matrix>
+        <matrix sid="transform">1.5125 0 0 -6.4875 0 0.05 0 12.2 0 0 1.5 4.5 0 0 0 1</matrix>
         <instance_geometry url="#立方体_032-mesh" name="立方体.031"/>
       </node>
       <node id="立方体_030" name="立方体.030" type="NODE">
@@ -3285,7 +3285,7 @@
         <instance_geometry url="#平面_006-mesh" name="平面.008"/>
       </node>
       <node id="平面_007" name="平面.007" type="NODE">
-        <matrix sid="transform">4.99453 0 -0.1478094 0 0 1.494481 0 10.7 0.7464374 0 0.9890159 3.75 0 0 0 1</matrix>
+        <matrix sid="transform">5 0 -0.148340452930 0 0 1.5222405 0 10.7277595 0.75 0 0.988936352868 3.75 0 0 0 1</matrix>
         <instance_geometry url="#平面_005-mesh" name="平面.007"/>
       </node>
       <node id="平面_006" name="平面.006" type="NODE">
